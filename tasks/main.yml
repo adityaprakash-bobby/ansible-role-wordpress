@@ -15,11 +15,11 @@
 # Create project folder
 - name: Create folder for website
   file:
-    dest: /var/www/book.example.com
+    dest: /var/www/{{ wp_domain }}
     state: directory
 
 - name: Copy contents to the project folder
-  command: cp -a /tmp/wordpress/. /var/www/book.example.com/ creates=/var/www/book.example.com/wp-settings.php
+  command: cp -a /tmp/wordpress/. /var/www/{{ wp_domain }}/ creates=/var/www/{{ wp_domain }}/wp-settings.php
 
 # Create wordpress mysql database and user
 - name: Create wordpress mysql database
@@ -36,7 +36,7 @@
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
 - name: Create wp-config
-  template: src=wp-config.php dest=/var/www/book.example.com/wp-config.php 
+  template: src=wp-config.php dest=/var/www/{{ wp_domain }}/wp-config.php 
 
 - name: Does the database exist?
   command: mysql -u root "{{ database_name }}" -e "SELECT ID FROM {{ database_name }}.wp_users LIMIT 1;"
